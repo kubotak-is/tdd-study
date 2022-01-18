@@ -1,0 +1,27 @@
+{
+    "name": "kubotak-is/tdd-study",
+    "type": "project",
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TddStudy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "authors": [
+        {
+            "name": "Kenjiro Kubota",
+            "email": "kenjiro.kubota@gmail.com"
+        }
+    ]
+}

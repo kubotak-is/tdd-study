@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+WHITE='\033[1;37m'
+NC='\033[0m'
+
+DOCKER_NAME='tdd-study'
+
+function docker_is_not_running {
+    echo -e "${WHITE}Container is not running.${NC}" >&2
+    echo "" >&2
+    echo -e "${WHITE}You may Tdd using the following commands:${NC} './tdd up'" >&2
+
+    exit 1
+}
+
+if ! docker info > /dev/null 2>&1; then
+  echo -e "${WHITE}Docker is not running.${NC}" >&2
+  exit 1
+fi
+
+if docker ps | grep $DOCKER_NAME > /dev/null 2>&1 ; then
+  EXEC="yes"
+else
+  EXEC="no"
+fi
+
+if [ $# -gt 0 ]; then
+  if [ "$1" == "build" ]; then
+    if [ "$EXEC" == "no" ]; then
+        docker build -t tdd-study-cli .
+    else
+         echo -e "${WHITE}Container is already running.${NC}" >&2
+    fi
+  fi
+
+  if [ "$1" == "up" ]; then
+    if [ "$EXEC" == "no" ]; then
+        docker run --name ${DOCKER_NAME} -it --rm -v ${PWD}:/app -d tdd-study-cli
+    else
+         echo -e "${WHITE}Container is already running.${NC}" >&2
+    fi
+  fi
+
+  if [ "$1" == "down" ]; then
+    if [ "$EXEC" == "yes" ]; then
+        docker stop "$DOCKER_NAME"
+    else
+        docker_is_not_running
+    fi
+  fi
+
+  if [ "$1" == "composer" ]; then
+    shift 1
+    if [ "$EXEC" == "yes" ]; then
+        docker exec \
+          "$DOCKER_NAME" \
+          composer "$@"
+    else
+        docker_is_not_running
+    fi
+  fi
+fi
