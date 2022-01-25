@@ -20,6 +20,8 @@ class MoneyTest extends TestCase
     {
         self::assertTrue((new Dollar(5))->equals(new Dollar(5)));
         self::assertFalse((new Dollar(5))->equals(new Dollar(6)));
+        self::assertTrue((new Franc(5))->equals(new Franc(5)));
+        self::assertFalse((new Franc(5))->equals(new Franc(6)));
     }
 
     public function testFrancMultiplication(): void
