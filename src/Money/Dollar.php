@@ -6,14 +6,15 @@ namespace TddStudy\Money;
 class Dollar extends Money
 {
     public function __construct(
-        int $amount
+        int $amount,
+        string $currency
     )
     {
-        $this->amount = $amount;
+        parent::__construct($amount, $currency);
     }
 
     public function times(int $multiplier): Money
     {
-        return new self($this->amount * $multiplier);
+        return Money::dollar($this->amount * $multiplier);
     }
 }
