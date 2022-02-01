@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace TddStudy\Money;
 
-abstract class Money
+class Money
 {
     protected int $amount;
     protected string $currency;
 
-    abstract public function times(int $multiplier);
+    public function times(int $multiplier): Money {
+        return new Money($this->amount * $multiplier, $this->currency);
+    }
 
     public function __construct(
         int $amount,
@@ -22,7 +24,7 @@ abstract class Money
     public function equals(Money $money): bool
     {
         return $this->amount === $money->amount
-            && get_class($this) === get_class($money);
+            && $this->currency() === $money->currency();
     }
 
     public static function dollar(int $amount): Money
@@ -38,5 +40,10 @@ abstract class Money
     public function currency(): string
     {
         return $this->currency;
+    }
+
+    public function __toString(): string
+    {
+        return $this->amount . " " . $this->currency;
     }
 }
