@@ -5,17 +5,17 @@ namespace TddStudy\Money;
 
 class Money implements Expression
 {
-    protected int $amount;
-    protected string $currency;
+    public int $amount;
+    public string $currency;
 
     public function times(int $multiplier): Money
     {
         return new Money($this->amount * $multiplier, $this->currency);
     }
 
-    public function plus(Money $addend): Expression
+    public function plus(Money $addend): Sum
     {
-        return new Money($this->amount + $addend->amount, $this->currency);
+        return new Sum($this, $addend);
     }
 
     public function __construct(
@@ -40,6 +40,11 @@ class Money implements Expression
     public static function franc(int $amount): Money
     {
         return new Money($amount, 'CHF');
+    }
+
+    public function reduce(string $to): Money
+    {
+        return $this;
     }
 
     public function currency(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Money;
 
 use Tests\TestCase;
+use TddStudy\Money\Sum;
 use TddStudy\Money\Bank;
 use TddStudy\Money\Money;
 
@@ -36,5 +37,30 @@ class MoneyTest extends TestCase
         $bank = new Bank();
         $reduced = $bank->reduce($sum, 'USD');
         self::assertEquals(Money::dollar(10), $reduced);
+    }
+
+    public function testPlusReturnsSum()
+    {
+        $five = Money::dollar(5);
+        $result = $five->plus($five);
+        /** @var Sum $sum */
+        $sum = $result;
+        $this->assertEquals($five, $sum->augend);
+        $this->assertEquals($five, $sum->addend);
+    }
+
+    public function testReduceSum()
+    {
+        $sum = new Sum(Money::dollar(3), Money::dollar(4));
+        $bank = new Bank();
+        $result = $bank->reduce($sum, "USD");
+        self::assertEquals(Money::dollar(7), $result);
+    }
+
+    public function testReduceMoney()
+    {
+        $bank = new Bank();
+        $result = $bank->reduce(Money::dollar(1), "USD");
+        $this->assertEquals(Money::dollar(1), $result);
     }
 }
