@@ -5,5 +5,6 @@ namespace TddStudy\Money;
 
 interface Expression
 {
+    public function plus(Expression $addend): Expression;
     public function reduce(Bank $back, string $to): Money;
 }
